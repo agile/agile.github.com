@@ -1,0 +1,84 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="content-type" content="text/html;charset=UTF-8"  />
+    <title>Mike Vincent, bends and twists</title>
+    <style type="text/css">
+      body {
+      }
+      div#content {
+        width: 60%;
+        margin: 50px auto;
+        border: .25em dotted purple;
+        background-color: pink;
+        height: 100%;
+      }
+      h1 {
+        text-align: center;
+        border-bottom: 5px solid silver;
+        color: black;
+        margin: auto;
+        font-size: 8em;
+      }
+      ul {
+        list-style: none;
+      }
+      ul#info {
+        border-bottom: .6em dotted purple;
+        padding-bottom: 1em;
+      }
+      a {
+        text-decoration: none;
+        outline: 0;
+      }
+      a {
+        color: black;
+        font-family: Lucida Grande;
+        line-height: 18px;
+      }
+      a:hover {
+        background-color: #aaa;
+      }
+      img {
+        float: right;
+        margin-right: 2em;
+      }
+    </style>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.2.6/jquery.min.js" type="text/javascript"></script>
+    <script type="text/javascript">
+      $(function() {
+        var limit = 10        // how many repos to list
+        var login = 'agile' // your username
+
+        $.getJSON('http://github.com/api/v1/json/' + login + '?callback=?', function(data) {
+          var repos = $.grep(data.user.repositories, function() {
+            return !this.fork
+          })
+
+          repos.sort(function(a, b) {
+            return b.watchers - a.watchers
+          })
+
+          $.each(repos.slice(0, limit), function() {
+            $('#repos').append('<li><a href="' + this.url + '">' + this.name + '</a></li>')
+          })
+        })        
+      })
+    </script>
+  </head>
+  <body>
+    <a href="http://github.com/agile/agile.github.com"><img style="position: absolute; top: 0; left: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_left_orange_ff7600.png" alt="Fork me on GitHub" /></a>            
+    <div id="content">
+      <ul id="info">
+        <li><a href="http://twitter.com/agile">twitter.com/agile</a></li>
+        <li><a href="http://github.com/agile">github.com/agile</a></li>
+        <li><a href="mailto:mike@cryingwhilecoding.com">mike</a>@<a href="http://cryingwhilecoding.com">cryingwhilecoding.com</a></li>
+      </ul>
+      <img src="ponies.gif" />
+      <ul id="repos">
+      </ul>
+    </div>
+  </body>
+</html>
